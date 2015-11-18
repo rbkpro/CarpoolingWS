@@ -26,7 +26,7 @@ public class DriverService  {
  	}
 	
 	public Driver getDriver(String driverID,String passWord,String regID)throws Exception{
-		//Driver driver = drivers.get(driverID);
+		
 		Driver driver = fetchDatabase.getDriver(driverID);
 		if(driver.getPassword().equals(encryptPassWord(passWord))){
 			driver.setRegID(regID);
@@ -38,7 +38,9 @@ public class DriverService  {
 			driver.setPassword("Yes");
 			
 		}
-		else driver.setPassword("No");	
+		else driver.setPassword("No");
+		System.out.println("getDriver Result : "+driver.getFirstName());
+		
 		return driver ;
 	}
 		
