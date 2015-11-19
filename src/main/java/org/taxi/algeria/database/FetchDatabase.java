@@ -166,7 +166,6 @@ public class FetchDatabase {
 				+ " `D_phoneNumber`=?,`D_birthDate`=?,`D_gender`=?,`D_email`=?,`D_license`=?,regID=? WHERE `driverID`=?");
 		ps.setString(1, driver.getFirstName());
 		ps.setString(2, driver.getLastName());
-		//ps.setString(3, driver.getPassword());
 		ps.setString(3, driver.getPhoneNumber());
 		ps.setDate(4, new Date(driver.getBirthDate().getTime()));
 		ps.setString(5, driver.getGender());
@@ -184,7 +183,6 @@ public class FetchDatabase {
 				+ "`Cust_email`=?, regID=? WHERE `customerID`=?");
 		ps.setString(1, customer.getFirstName());
 		ps.setString(2, customer.getLastName());
-		//ps.setString(3, customer.getPassword());
 		ps.setString(3, customer.getPhoneNumber());
 		ps.setDate(4, new Date(customer.getBirthDate().getTime()));
 		ps.setString(5, customer.getGender());
@@ -553,6 +551,28 @@ public class FetchDatabase {
 		else 
 			return false;	
 
+	}
+
+	public ArrayList<Trip> getTrips(String driverID) throws Exception {
+		PreparedStatement ps= connection.prepareStatement("SELECT * FROM trip where carID in "
+													+ "(SELECT carID from car where driverID = ?) )");
+		ps.setString(1, driverID);
+		ResultSet rs=ps.executeQuery();
+		ArrayList<Trip> tripList= new ArrayList<Trip>();
+		while (rs.next()){
+			Trip trip=new Trip();
+			trip.setTripID(rs.getInt("tripID"));
+			trip.setDepartureLocation(getLocation(rs.getInt("trip_departureLocation")));
+			trip.setArrivalLocation(getLocation(rs.getInt("trip_arrivalLocation")));
+			trip.setDepartureDate(rs.getTimestamp("trip_departureDate"));
+			trip.setArrivalDate(rs.getTimestamp("trip_arrivalDate"));
+			trip.setReservedSeats(rs.getInt("trip_reservedSeats"));
+			trip.setUnitPrice(rs.getDouble("trip_unitPrice"));
+			trip.setTripCar(getCar(rs.getInt("carID")));
+			tripList.add(trip);					
+		}
+		
+		return tripList;
 	}
 
 }

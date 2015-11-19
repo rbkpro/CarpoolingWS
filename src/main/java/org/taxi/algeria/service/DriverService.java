@@ -13,20 +13,19 @@ import org.taxi.algeria.model.Message;
 
 public class DriverService  {
 	
-	//private Map<String, Driver> drivers ;
+	
 	private FetchDatabase fetchDatabase;
 	
 	public DriverService () throws Exception {
 		this.fetchDatabase= new FetchDatabase();
-		//drivers=fetchDatabase.getDrivers();
-	}
+			}
 	
 	public ArrayList<Driver> getAlldrivers() throws Exception{
 		return new ArrayList<Driver>(fetchDatabase.getDrivers().values());
  	}
 	
 	public Driver getDriver(String driverID,String passWord,String regID)throws Exception{
-		
+
 		Driver driver = fetchDatabase.getDriver(driverID);
 		if(driver.getPassword().equals(encryptPassWord(passWord))){
 			driver.setRegID(regID);
@@ -39,17 +38,15 @@ public class DriverService  {
 			
 		}
 		else driver.setPassword("No");
-		System.out.println("getDriver Result : "+driver.getFirstName());
-		
 		return driver ;
 	}
 		
 
 	public Driver updateDriver(Driver driver)throws Exception {
+		
 		if(driver.getDriverID().isEmpty()){
 			return null;
 		}
-		driver.setPassword(encryptPassWord(driver.getPassword()));
 		fetchDatabase.updateDriver(driver);
 		return driver;
 	}

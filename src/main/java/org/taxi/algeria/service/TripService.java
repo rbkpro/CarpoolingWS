@@ -13,13 +13,12 @@ import org.taxi.algeria.model.Car;
 import org.taxi.algeria.model.Trip;
 
 public class TripService {
-	private FetchDatabase fetchDatabase;
 	
+	private FetchDatabase fetchDatabase;
 	
 	public TripService()throws Exception{
 		this.fetchDatabase= new FetchDatabase();
 	}
-	
 	
 	public int insertTrip(Trip trip)throws Exception{
 		Car car=fetchDatabase.getCar(trip.getTripCar().getCarID());
@@ -48,6 +47,10 @@ public class TripService {
 		Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
 		Date date = Date.from(instant);
 		return fetchDatabase.getTrips(departureLocation, arrivalLocation, date);
+	}
+	
+	public ArrayList<Trip>getTrips(String driverID) throws Exception {
+		return fetchDatabase.getTrips(driverID);
 	}
 	
 	

@@ -1,6 +1,5 @@
 package org.taxi.algeria.resources;
 
-
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -21,50 +20,47 @@ import org.taxi.algeria.service.DriverService;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class DriverResource {
-	
-	DriverService driverService ; 
-	
-	public DriverResource() throws Exception{
+
+	DriverService driverService;
+
+	public DriverResource() throws Exception {
 		driverService = new DriverService();
 	}
-	 
+
 	@GET
 	public ArrayList<Driver> getAllDrivers() throws Exception {
 		return driverService.getAlldrivers();
 	}
-	
+
 	@GET
 	@Path("/{driverID}")
-	public Driver getDriver(@PathParam("driverID") String driverID,@QueryParam ("passWord") String passWord,@QueryParam("regID") String regID) throws Exception {
-		return driverService.getDriver(driverID,passWord,regID);
+	public Driver getDriver(@PathParam("driverID") String driverID,
+			@QueryParam("passWord") String passWord,
+			@QueryParam("regID") String regID) throws Exception {
+		return driverService.getDriver(driverID, passWord, regID);
 	}
-	 
+
 	@POST
-	public void insertDriver(Driver driver) throws Exception {	
+	public void insertDriver(Driver driver) throws Exception {
 		driverService.insertDriver(driver);
 	}
-	
+
 	@POST
 	@Path("logout")
 	public void driverLogout(Driver driver) throws Exception {
 		driverService.driverLogout(driver);
 	}
-	
+
 	@PUT
-	public Driver updateDriver(Driver Driver)throws Exception{
+	public Driver updateDriver(Driver Driver)throws Exception {
 		return driverService.updateDriver(Driver);
 	}
-	
-	 
+		
 	@DELETE
 	@Path("/{driverID}")
-	public void deleteDriver(@PathParam("driverID") String driverID) throws Exception{
+	public void deleteDriver(@PathParam("driverID") String driverID)
+			throws Exception {
 		driverService.deleteDriver(driverID);
 	}
-
-	
-
-
-
 
 }

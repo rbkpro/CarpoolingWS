@@ -26,10 +26,10 @@ public class CustomerService {
 			for(Message message:getMessages(customer.getCustomerID())){
 				sendNotification(message);
 			}
-			customer.setPassword("Yes");
-			
+			customer.setPassword("Yes");	
 		}
 		else customer.setPassword("No");
+		
 		return customer;
 	}
 	
@@ -47,7 +47,6 @@ public class CustomerService {
 		if(customer.getCustomerID().isEmpty()){
 			return null;
 		}
-		customer.setPassword(encryptPassWord(customer.getPassword()));
 		fetchDatabase.updateCustomer(customer);
 		return customer;
 	}
