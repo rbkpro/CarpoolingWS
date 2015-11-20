@@ -554,8 +554,8 @@ public class FetchDatabase {
 	}
 
 	public ArrayList<Trip> getTrips(String driverID) throws Exception {
-		PreparedStatement ps= connection.prepareStatement("SELECT * FROM trip where carID in "
-													+ "(SELECT carID from car where driverID = ?) )");
+		PreparedStatement ps= connection.prepareStatement("SELECT * FROM trip where carID in "	
+	                                     + "(SELECT carID from car where driverID = ?) ");
 		ps.setString(1, driverID);
 		ResultSet rs=ps.executeQuery();
 		ArrayList<Trip> tripList= new ArrayList<Trip>();
