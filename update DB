@@ -1,0 +1,5 @@
+CREATE TABLE `userToken` (
+  `email` varchar(99) NOT NULL,
+  `token` int(11) NOT NULL,
+  PRIMARY KEY (`email`)
+)

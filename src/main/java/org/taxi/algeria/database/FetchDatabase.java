@@ -535,6 +535,7 @@ public class FetchDatabase {
 		ps.executeUpdate();
 		
 	}
+	
 	public void updateTrip(int tripID,int seats)throws Exception {
 		PreparedStatement ps= connection.prepareStatement("update trip set  "
 				+ "trip_reservedSeats=trip_reservedSeats+? where tripID=?");
@@ -543,8 +544,11 @@ public class FetchDatabase {
 		ps.executeUpdate();
 	}
 
-	public boolean getEmail() throws Exception  {
-		PreparedStatement ps= connection.prepareStatement("SELECT * FROM driver WHERE driverID = ? ");
+	public boolean getEmail(String email) throws Exception  {
+		PreparedStatement ps= connection.prepareStatement("SELECT * FROM driver, customer"
+															+ " where driver.D_email=? or customer.Cust_email=?");
+		ps.setString(1, email);
+		ps.setString(2, email);
 		ResultSet rs= ps.executeQuery();
 		if(rs.next())
 			return true;
@@ -573,6 +577,63 @@ public class FetchDatabase {
 		}
 		
 		return tripList;
+	}
+
+	public void saveToken(String email,int token) throws Exception{
+		PreparedStatement ps = connection.prepareStatement("INSERT INTO userToken(email,token)"
+														+ " VALUES (?,?) ON DUPLICATE KEY UPDATE token=VALUES(token)");
+		ps.setString(1, email);
+		ps.setInt(2, token);
+		int i = ps.executeUpdate();
+		
+		if (i > 0){
+			resultValue = 200;
+		}
+		else
+			resultValue = 404;
+		
+	}
+
+	
+	public void resetPasswordInDriver(String email, String pw) throws Exception {
+		
+		PreparedStatement ps = connection.prepareStatement("UPDATE driver SET "
+														+ "	driver.D_passWord=? "
+														+ " WHERE driver.D_email=? "
+														);
+		ps.setString(1, pw);
+		ps.setString(2, email);
+		ps.executeUpdate();
+	}
+	
+	public void resetPasswordInCustomer(String email, String pw) throws Exception {
+		
+		PreparedStatement ps = connection.prepareStatement("UPDATE customer SET "
+														+ "	Cust_passWord=? "
+														+ " WHERE Cust_email=? "
+														);
+		ps.setString(1, pw);
+		ps.setString(2, email);
+		ps.executeUpdate();
+	}
+
+	public void deleteToken(String email) throws Exception {
+		PreparedStatement ps = connection.prepareStatement("DELETE FROM userToken WHERE email = ?");
+		ps.setString(1, email);
+		ps.executeUpdate();
+		
+	}
+
+	
+	public boolean getEmail(String email, int token) throws Exception {
+		PreparedStatement ps= connection.prepareStatement("SELECT * FROM userToken where email=? and token=?");
+		ps.setString(1, email);
+		ps.setInt(2, token);
+		ResultSet rs= ps.executeQuery();
+		if(rs.next())
+			return true;
+		else 
+			return false;
 	}
 
 }
